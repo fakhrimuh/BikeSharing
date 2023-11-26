@@ -33,7 +33,7 @@ st.dataframe(day_df)
 
 # ...
 
-st.subheader("Assessing Data")
+st.title("Assessing Data")
 
 # Menampilkan statistik deskriptif
 st.subheader("Descriptive Statistics")
@@ -63,6 +63,53 @@ with col2:
 st.subheader("Cleaning Data")
 day_df['dteday'] = pd.to_datetime(day_df['dteday'])
 st.write("Jumlah Data Yang Hilang: ", day_df.info())
+
+# Mengubah Tipe Data
+st.subheader("Mengubah Tipe Data")
+day_df['dteday'] = pd.to_datetime(day_df['dteday'])
+
+# Melihat tipe data kolom dteday setelah perubahan
+st.write("Tipe data setelah perubahan:")
+st.write(day_df.dtypes)
+
+st.title("Exploratory Data Analysis")
+
+st.header("Analisis Deskriptif")
+selected_variables = ['temp', 'hum', 'windspeed', 'cnt']
+
+# Menampilkan ringkasan statistik
+st.write("Ringkasan Statistik dari Variabel Terpilih:")
+st.write(day_df[selected_variables].describe())
+
+# Visualisasi distribusi data untuk setiap variabel secara horizontal
+fig, axes = plt.subplots(nrows=1, ncols=len(selected_variables), figsize=(18, 6))
+
+for i, variable in enumerate(selected_variables):
+    sns.histplot(day_df[variable], bins=20, kde=True, ax=axes[i])
+    axes[i].set_xlabel(variable)
+    axes[i].set_ylabel('Frekuensi')
+    axes[i].set_title(f'Histogram Distribusi {variable}')
+
+# Menampilkan plot Matplotlib di Streamlit
+st.pyplot(fig)
+
+st.header("Tren penggunaan dari hari ke hari")
+
+# Plot grafik rental sepeda per hari
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(day_df['dteday'], day_df['cnt'], marker='o', linestyle='-')
+
+# Konfigurasi plot
+ax.set_title('Grafik Rental Sepeda per Hari')
+ax.set_xlabel('Tanggal')
+ax.set_ylabel('Jumlah Rental Sepeda')
+ax.grid(True)
+fig.tight_layout()
+
+# Menampilkan plot Matplotlib di Streamlit
+st.pyplot(fig)
+
+st.write("Berdasarkan dari grafik tersebut terjadi lonjakan penggunaan dimulai pada bulan april hingga oktober")
 
 # Pertanyaan 1: Pengaruh cuaca
 st.title("Analisis Data: Bike Sharing")
@@ -127,7 +174,7 @@ Apakah kondisi cuaca, seperti suhu, kelembapan, atau kecepatan angin, memiliki p
 """
 
 """
-####Bagaimana perbedaan penyewaan sepeda antara hari libur dan hari kerja ini dapat mempengaruhi strategi pemasaran atau operasional terkait dengan penyediaan sepeda selama hari libur dan hari kerja
+Bagaimana perbedaan penyewaan sepeda antara hari libur dan hari kerja ini dapat mempengaruhi strategi pemasaran atau operasional terkait dengan penyediaan sepeda selama hari libur dan hari kerja
 
 
 *   Penyewa Sepeda menggunakan sepeda lebih banyak pada hari kerja dibandingkan dengan hari libur
